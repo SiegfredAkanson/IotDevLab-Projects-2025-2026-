@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dustbin Bot Controller</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #f1f1f1;
+      text-align: center;
+      margin: 0;
+      padding: 16px;
+    }
+    h1 { margin-top: 10px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 320px;
+      margin: 16px auto;
+    }
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button:active { transform: scale(0.98); }
+    .mode { max-width: 320px; margin: 16px auto; display: flex; gap: 10px; }
+    .mode button { flex: 1; }
+    .status { margin-top: 10px; color: #9ae6b4; }
+  </style>
+</head>
+<body>
+  <h1>Smart Dustbin Robot</h1>
+  <p>Use Manual mode for direct control, Auto mode for line following.</p>
+
+  <div class="mode">
+    <button onclick="sendCmd('mode_auto')">Auto Mode</button>
+    <button onclick="sendCmd('mode_manual')">Manual Mode</button>
+  </div>
+
+  <div class="grid">
+    <div></div>
+    <button onclick="sendCmd('forward')">Forward</button>
+    <div></div>
+
+    <button onclick="sendCmd('left')">Left</button>
+    <button onclick="sendCmd('stop')">Stop</button>
+    <button onclick="sendCmd('right')">Right</button>
+
+    <div></div>
+    <button onclick="sendCmd('backward')">Backward</button>
+    <div></div>
+  </div>
+
+  <p class="status" id="status">Ready</p>
+
+  <script>
+    async function sendCmd(cmd) {
+      const status = document.getElementById('status');
+      try {
+        status.textContent = 'Sending: ' + cmd;
+        const res = await fetch('/action?cmd=' + encodeURIComponent(cmd));
+        const data = await res.json();
+        status.textContent = data.ok ? ('OK | mode=' + data.mode) : 'Error';
+      } catch (e) {
+        status.textContent = 'Request failed. Check Wi-Fi connection.';
+      }
+    }
+  </script>
+</body>
+</html>
