@@ -109,7 +109,7 @@ Confirmed identities are actively logged to local CSV and Excel records alongsid
 ## Demonstration
 Below is a video demonstrating our system capturing faces and logging attendance in real-time.
 
-<video src="assets/videos/sample-video-demo.mp4" controls></video>
+![System Demonstration Video](assets/videos/sample-video-demo.mp4)
 
 ## Challenges Faced
 One of the major challenges our team faced was the low image quality and general instability of the ESP32-CAM module. Because facial recognition requires clear, high-contrast imagery, the camera's budget sensor often struggled under varying lighting conditions, making reliable detection difficult. Furthermore, ensuring the ESP32-CAM reliably transmitted frames over Wi-Fi without dropping out or crashing demanded that we permanently lower the frame resolution to standard VGA and implement retry logic within our HTTP requests.
