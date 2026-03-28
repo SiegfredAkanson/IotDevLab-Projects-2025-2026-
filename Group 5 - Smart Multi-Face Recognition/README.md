@@ -9,7 +9,7 @@ Traditional methods of taking attendance are time-consuming and prone to inaccur
 ## System Architecture
 Our system operates through a distributed architecture. The physical environment is monitored by a primary ESP32-S3 microcontroller, which handles all sensory input and user feedback. An ESP32-CAM module acts as a dedicated wireless camera, streaming data over Wi-Fi. Finally, a central PC handles the computationally expensive facial recognition processing, manages the data storage, and serves the web dashboard.
 
-![System Architecture Design](./assets/images/system-architecture-design.png)
+![System Architecture Design](assets/images/system-architecture-design.png)
 
 ## Hardware Design
 The hardware components are centered around an ESP32-S3 Main Board. We used interrupts to ensure the microcontroller reacts instantly to hardware events. The setup includes:
@@ -20,7 +20,7 @@ The hardware components are centered around an ESP32-S3 Main Board. We used inte
 - **RGB LED and Buzzer:** Deliver immediate visual and audio success or failure indicators.
 - **ESP32-CAM Module:** Streams VGA (640x480) JPEG frames to the PC server via a local 2.4 GHz Wi-Fi hotspot.
 
-![Devices Setup](./assets/images/devices-setup.jpeg)
+![Devices Setup](assets/images/devices-setup.jpeg)
 
 ## Software Architecture
 The software is divided between microcontrollers and a central server:
@@ -28,7 +28,7 @@ The software is divided between microcontrollers and a central server:
 - **OpenCV & Flask (PC Server):** The PC runs the main server application. It pulls image frames from the ESP32-CAM over HTTP and processes them using Haar Cascades for face detection and Local Binary Patterns Histograms (LBPH) for face recognition. It also runs a local Flask server to provide a web interface.
 - **Data Persistence:** Recognition models are trained dynamically and stored as a YAML file, while identities are mapped using a JSON file. Attendance records are automatically persisted to both CSV and Excel formats.
 
-![TFT Displaying Feedback](./assets/images/tft-displaying-feedback.jpeg)
+![TFT Displaying Feedback](assets/images/tft-displaying-feedback.jpeg)
 
 ## Repository Structure
 The repository contains the following major files and components:
@@ -96,7 +96,7 @@ Once the setup is complete, you can begin using the system:
 4. Open a web browser and navigate to the localhost port 5000 to view the live dashboard.
 5. Wave at the PIR sensor or press the physical button on the ESP32-S3 to trigger an attendance scan.
 
-![Attendance Web Dashboard](./assets/images/attendance-web-dashboard.png)
+![Attendance Web Dashboard](assets/images/attendance-web-dashboard.png)
 
 ## Face Enrollment
 The system cannot recognize someone until they are enrolled. This can be done remotely via the Web Dashboard or physically on the device. By holding the physical push button for 3 seconds, the ESP32-S3 shifts into Enrollment Mode. The PC will prompt for a name, and the ESP32-CAM will capture numerous face samples from various angles. Alternatively, entering a name on the dashboard will queue the request remotely. The PC saves these images, retrains the recognition model on the fly, and systematically returns to Attendance Mode.
@@ -109,7 +109,7 @@ Confirmed identities are actively logged to local CSV and Excel records alongsid
 ## Demonstration
 Below is a video demonstrating our system capturing faces and logging attendance in real-time.
 
-<video src="./assets/videos/sample-video-demo.mp4" controls></video>
+<video src="assets/videos/sample-video-demo.mp4" controls></video>
 
 ## Challenges Faced
 One of the major challenges our team faced was the low image quality and general instability of the ESP32-CAM module. Because facial recognition requires clear, high-contrast imagery, the camera's budget sensor often struggled under varying lighting conditions, making reliable detection difficult. Furthermore, ensuring the ESP32-CAM reliably transmitted frames over Wi-Fi without dropping out or crashing demanded that we permanently lower the frame resolution to standard VGA and implement retry logic within our HTTP requests.
